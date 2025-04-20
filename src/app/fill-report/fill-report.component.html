@@ -1,0 +1,284 @@
+<div class="standard-checklist">
+  <h2>Checklist Standard</h2>
+
+  <form (ngSubmit)="submitStandardChecklist()" *ngIf="standardChecklist?.length">
+    <div class="checklist-table">
+      <div class="header-row">
+        <div>Critères de contrôle</div>
+        <div>Responsable Implémentation</div>
+        <div>Responsable Check</div>
+        <div>Implé</div>
+        <div>Action</div>
+        <div>Responsable action</div>
+        <div>Délais</div>
+        <div>Contrôle de succès</div>
+      </div>
+
+      <div *ngFor="let item of standardChecklist" class="checklist-row">
+        <div class="desc">{{ item.criteriaDescription }}</div>
+        <div>{{ item.implementationResponsible?.name }}</div>
+        <div>{{ item.checkResponsible?.name }}</div>
+
+        <div>
+          <select
+            [disabled]="!item.editable"
+            [(ngModel)]="item.implemented"
+            name="implemented-{{ item.entryId }}"
+            (ngModelChange)="item.isFilled = true">
+            <option [ngValue]="true">✔️</option>
+            <option [ngValue]="false">❌</option>
+          </select>
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Action"
+            [disabled]="!item.editable || item.implemented"
+            [(ngModel)]="item.action"
+            name="action-{{ item.entryId }}"
+            (ngModelChange)="item.isFilled = true" />
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Responsable"
+            [disabled]="!item.editable || item.implemented"
+            [(ngModel)]="item.responsableAction"
+            name="responsable-{{ item.entryId }}"
+            (ngModelChange)="item.isFilled = true" />
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Délais"
+            [disabled]="!item.editable || item.implemented"
+            [(ngModel)]="item.deadline"
+            name="deadline-{{ item.entryId }}"
+            (ngModelChange)="item.isFilled = true" />
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Contrôle"
+            [disabled]="!item.editable || item.implemented"
+            [(ngModel)]="item.successControl"
+            name="control-{{ item.entryId }}"
+            (ngModelChange)="item.isFilled = true" />
+        </div>
+      </div>
+    </div>
+    <button
+    type="submit"
+    class="mt-4"
+    [disabled]="!hasFilledStandardEntries()">
+    Enregistrer la checklist
+  </button>
+</form>
+
+
+
+  <div class="standard-checklist">
+    <h2>Checklist Spécifique</h2>
+
+    <form (ngSubmit)="submitSpecificChecklist()" *ngIf="specificChecklist?.length">
+      <div class="checklist-table">
+        <div class="header-row">
+          <div>Critères de contrôle</div>
+          <div>Départements Implémentation</div>
+          <div>Départements Check</div>
+          <div>Homologation</div>
+          <div>Action</div>
+          <div>Responsable action</div>
+          <div>Délais</div>
+          <div>Contrôle de succès</div>
+        </div>
+
+        <div *ngFor="let item of specificChecklist" class="checklist-row">
+          <div class="desc">{{ item.criteriaDescription }}</div>
+          <div>{{ getDepartmentNames(item.implementationResponsibles) }}</div>
+          <div>{{ getDepartmentNames(item.checkResponsibles) }}</div>
+
+          <div>
+            <select
+              [disabled]="!item.editable"
+              [(ngModel)]="item.homologation"
+              name="homologation-{{ item.entryId }}"
+              (ngModelChange)="item.isFilled = true">
+              <option [ngValue]="true">✔️</option>
+              <option [ngValue]="false">❌</option>
+            </select>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              placeholder="Action"
+              [disabled]="!item.editable || item.homologation"
+              [(ngModel)]="item.action"
+              name="action-{{ item.entryId }}"
+              (ngModelChange)="item.isFilled = true" />
+          </div>
+
+          <div>
+            <input
+              type="text"
+              placeholder="Responsable"
+              [disabled]="!item.editable || item.homologation"
+              [(ngModel)]="item.responsableAction"
+              name="responsable-{{ item.entryId }}"
+              (ngModelChange)="item.isFilled = true" />
+          </div>
+
+          <div>
+            <input
+              type="text"
+              placeholder="Délais"
+              [disabled]="!item.editable || item.homologation"
+              [(ngModel)]="item.deadline"
+              name="deadline-{{ item.entryId }}"
+              (ngModelChange)="item.isFilled = true" />
+          </div>
+
+          <div>
+            <input
+              type="text"
+              placeholder="Contrôle"
+              [disabled]="!item.editable || item.homologation"
+              [(ngModel)]="item.successControl"
+              name="control-{{ item.entryId }}"
+              (ngModelChange)="item.isFilled = true" />
+          </div>
+        </div>
+      </div>
+
+      <button
+      type="submit"
+      class="mt-4"
+      [disabled]="!hasFilledSpecificEntries()">
+      Enregistrer la checklist
+    </button>
+    </form>
+  </div>
+
+
+<div class="standard-checklist">
+  <h2>Fiche Maintenance</h2>
+
+  <form (ngSubmit)="updateMaintenanceForm()" *ngIf="maintenanceForm">
+    <div class="checklist-table">
+
+      <!-- Maintenance System fields -->
+      <div class="checklist-row">
+        <label>Contrôlé selon</label>
+        <select [(ngModel)]="maintenanceForm.form.controlStandard" name="controlStandard">
+          <option [ngValue]="'VDE_0100'">VDE 0100</option>
+          <option [ngValue]="'NFC_15_100'">NFC 15-100</option>
+          <option [ngValue]="'NONE'">Aucun</option>
+        </select>
+      </div>
+
+      <div class="checklist-row">
+        <label>Nature du courant</label>
+        <select [(ngModel)]="maintenanceForm.form.currentType" name="currentType"
+                [disabled]="!canEditMaintenancePart()">
+          <option [ngValue]="'NONE'">Aucun</option>
+          <option [ngValue]="'AC'">AC</option>
+          <option [ngValue]="'DC'">DC</option>
+        </select>
+      </div>
+
+      <div class="checklist-row">
+        <label>Forme de réseau</label>
+        <select [(ngModel)]="maintenanceForm.form.networkForm" name="networkForm"
+                [disabled]="!canEditMaintenancePart()">
+          <option [ngValue]="'SYSTEM_3_CONDUCTORS'">Système à 3 conducteurs</option>
+          <option [ngValue]="'SYSTEM_4_CONDUCTORS'">Système à 4 conducteurs</option>
+          <option [ngValue]="'SYSTEM_5_CONDUCTORS'">Système à 5 conducteurs</option>
+        </select>
+      </div>
+
+      <div class="checklist-row">
+        <label>Circuit de puissance</label>
+        <input [(ngModel)]="maintenanceForm.form.powerCircuit" name="powerCircuit" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Circuit de commande</label>
+        <input [(ngModel)]="maintenanceForm.form.controlCircuit" name="controlCircuit" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Valeur du fusible</label>
+        <input [(ngModel)]="maintenanceForm.form.fuseValue" name="fuseValue" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Fréquence</label>
+        <input [(ngModel)]="maintenanceForm.form.frequency" name="frequency" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Phase/Phase 380v</label>
+        <input [(ngModel)]="maintenanceForm.form.phaseBalanceTest380v" name="phaseBalanceTest380v" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Phase/Neutre 210v</label>
+        <input [(ngModel)]="maintenanceForm.form.phaseBalanceTest210v" name="phaseBalanceTest210v" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Résistance isolement moteur</label>
+        <input [(ngModel)]="maintenanceForm.form.insulationResistanceMotor" name="insulationResistanceMotor" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Résistance isolement câble</label>
+        <input [(ngModel)]="maintenanceForm.form.insulationResistanceCable" name="insulationResistanceCable" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Hauteur machine</label>
+        <input [(ngModel)]="maintenanceForm.form.machineSizeHeight" name="machineSizeHeight" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Longueur machine</label>
+        <input [(ngModel)]="maintenanceForm.form.machineSizeLength" name="machineSizeLength" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <div class="checklist-row">
+        <label>Largeur machine</label>
+        <input [(ngModel)]="maintenanceForm.form.machineSizeWidth" name="machineSizeWidth" [disabled]="!canEditMaintenancePart()" />
+      </div>
+
+      <!-- SHE-specific fields -->
+      <div class="checklist-row">
+        <label>Transformateur</label>
+        <select [(ngModel)]="maintenanceForm.form.hasTransformer" name="hasTransformer"
+                [disabled]="!canEditMaintenancePart()">
+          <option [ngValue]="true">Oui</option>
+          <option [ngValue]="false">Non</option>
+        </select>
+      </div>
+
+      <div class="checklist-row">
+        <label>Est en ordre</label>
+        <select [(ngModel)]="maintenanceForm.form.isInOrder" name="isInOrder"
+                [disabled]="!canEditShePart()">
+          <option [ngValue]="true">Oui</option>
+          <option [ngValue]="false">Non</option>
+        </select>
+      </div>
+
+    </div>
+
+    <button type="submit" [disabled]="!(canEditMaintenancePart() || canEditShePart())">Enregistrer</button>
+  </form>
+</div>
+
+

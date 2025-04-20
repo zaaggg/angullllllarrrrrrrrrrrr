@@ -1,0 +1,12 @@
+<div *ngIf="protocolsByType">
+  <div *ngFor="let type of protocolsByType | keyvalue">
+    <h3>{{ type.key }}</h3>
+    <ul>
+      <li *ngFor="let protocol of type.value">
+        <button (click)="selectProtocol(protocol.id)">
+          {{ protocol.name }}
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
