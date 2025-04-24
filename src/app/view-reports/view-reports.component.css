@@ -1,0 +1,47 @@
+.card {
+  background-color: #ffffff;
+  border-left: 4px solid #0d6efd;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+img.rounded-circle {
+  object-fit: cover;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.3em 0.6em;
+  border-radius: 0.4rem;
+  background-color: #f1f3f5;
+  color: #495057;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.card-title {
+  font-weight: 600;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+}
+
+.assigned-user-card {
+  transition: background-color 0.2s ease;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.assigned-user-card:hover {
+  background-color: #f8f9fa;
+}

@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Créer un Rapport</h2>
+
+  <form [formGroup]="reportForm" (ngSubmit)="submitReport()" class="needs-validation">
+
+    <!-- Input: Type -->
+    <div class="form-group mb-3">
+      <label for="type">Type (ex: Homologation, Requalification...)</label>
+      <input type="text" id="type" class="form-control" formControlName="type" required />
+    </div>
+
+    <!-- Other static inputs -->
+    <div class="form-group mb-3">
+      <label for="serialNumber">Numéro de série</label>
+      <input type="text" id="serialNumber" class="form-control" formControlName="serialNumber" required />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="equipmentDescription">Description de l’équipement</label>
+      <input type="text" id="equipmentDescription" class="form-control" formControlName="equipmentDescription" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="designation">Désignation</label>
+      <input type="text" id="designation" class="form-control" formControlName="designation" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="manufacturer">Fabricant</label>
+      <input type="text" id="manufacturer" class="form-control" formControlName="manufacturer" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="immobilization">Immobilisation</label>
+      <input type="text" id="immobilization" class="form-control" formControlName="immobilization" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="serviceSeg">Service Segment</label>
+      <input type="text" id="serviceSeg" class="form-control" formControlName="serviceSeg" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="businessUnit">Business Unit</label>
+      <input type="text" id="businessUnit" class="form-control" formControlName="businessUnit" />
+    </div>
+
+    <!-- User assignments by department -->
+    <div *ngFor="let dept of departments" class="form-group mb-3">
+      <label [for]="'department_' + dept.id">Responsable du département {{ dept.name }}</label>
+      <select class="form-control" [id]="'department_' + dept.id" [formControlName]="'department_' + dept.id">
+        <option value="">-- Sélectionnez un utilisateur --</option>
+        <option *ngFor="let user of usersByDepartment[dept.id]" [value]="user.id">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Créer le rapport</button>
+  </form>
+</div>
