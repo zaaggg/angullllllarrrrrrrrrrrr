@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '../services/user.service';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '../model/user.model';
 import { CommonModule } from '@angular/common';
+import { AssignedUserDTO } from '../model/assignedUserDTO.model';
 
 @Component({
   selector: 'app-report-create',
@@ -19,27 +18,21 @@ import { CommonModule } from '@angular/common';
 })
 export class ReportCreateComponent implements OnInit {
   reportForm!: FormGroup;
-  users: User[] = [];
+  requiredUsers: AssignedUserDTO[] = [];
   departments: any[] = [];
   protocolId!: number;
-  usersByDepartment: { [key: number]: User[] } = {};
+  usersByDepartment: { [key: number]: AssignedUserDTO[] } = {};
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
     private reportService: ReportService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      this.protocolId = Number(params.get('protocolId'));
-      console.log('✅ Protocol ID from route:', this.protocolId);
-    });
-
-
+    // Step 1: Initialize the static part of the form first
     this.reportForm = this.fb.group({
-      type: [''],  // now input by the user
+      type: [''],
       serialNumber: [''],
       equipmentDescription: [''],
       designation: [''],
@@ -49,17 +42,65 @@ export class ReportCreateComponent implements OnInit {
       businessUnit: ['']
     });
 
-    this.userService.getAllUsersExceptAdmins().subscribe((users) => {
-      this.users = users;
-      this.departments = [...new Set(users.map(u => u.department.id))].map(id => {
-        return { id, name: users.find(u => u.department.id === id)!.department.name };
-      });
+    // Step 2: Get protocolId from query param and fetch users
+    this.route.queryParamMap.subscribe(params => {
+      const protocolIdParam = params.get('protocolId');
+      if (protocolIdParam) {
+        this.protocolId = Number(protocolIdParam);
+        console.log('✅ Protocol ID from route:', this.protocolId);
 
-      this.departments.forEach((dept) => {
-        this.reportForm.addControl(`department_${dept.id}`, this.fb.control(''));
-        this.usersByDepartment[dept.id] = users.filter(u => u.department.id === dept.id);
-      });
+        this.reportService.getRequiredUsers(this.protocolId).subscribe({
+          next: (users) => {
+            console.log('[REQUIRED USERS]', users);
+            this.requiredUsers = users;
+
+            // Group users by department
+            this.usersByDepartment = {};
+            users.forEach(user => {
+              const deptId = user.department.id;
+              if (!this.usersByDepartment[deptId]) {
+                this.usersByDepartment[deptId] = [];
+              }
+              this.usersByDepartment[deptId].push(user);
+            });
+
+            // Extract unique departments and create FormControls
+            this.departments = Object.keys(this.usersByDepartment).map(id => {
+              const deptUsers = this.usersByDepartment[+id];
+              return {
+                id: +id,
+                name: deptUsers?.[0]?.department?.name || 'Département'
+              };
+            });
+
+            // Dynamically add FormControls for each department
+            this.departments.forEach(dept => {
+              const controlName = `department_${dept.id}`;
+              if (!this.reportForm.contains(controlName)) {
+                this.reportForm.addControl(controlName, new FormControl(''));
+              }
+            });
+          },
+          error: (err) => {
+            console.error('[REQUIRED USERS ERROR]', err);
+          }
+        });
+      } else {
+        console.warn('❌ No protocolId found in query params');
+      }
     });
+  }
+
+
+  groupUsersByDepartment(users: AssignedUserDTO[]): void {
+    this.usersByDepartment = {};
+    for (const user of users) {
+      const deptId = user.department.id;
+      if (!this.usersByDepartment[deptId]) {
+        this.usersByDepartment[deptId] = [];
+      }
+      this.usersByDepartment[deptId].push(user);
+    }
   }
 
   submitReport() {

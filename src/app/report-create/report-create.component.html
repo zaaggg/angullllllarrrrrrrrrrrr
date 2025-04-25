@@ -45,12 +45,16 @@
       <input type="text" id="businessUnit" class="form-control" formControlName="businessUnit" />
     </div>
 
-    <!-- User assignments by department -->
     <div *ngFor="let dept of departments" class="form-group mb-3">
       <label [for]="'department_' + dept.id">Responsable du département {{ dept.name }}</label>
-      <select class="form-control" [id]="'department_' + dept.id" [formControlName]="'department_' + dept.id">
+      <select
+        class="form-control"
+        [id]="'department_' + dept.id"
+        [formControlName]="'department_' + dept.id">
         <option value="">-- Sélectionnez un utilisateur --</option>
-        <option *ngFor="let user of usersByDepartment[dept.id]" [value]="user.id">
+        <option
+          *ngFor="let user of usersByDepartment[dept.id]"
+          [value]="user.userId">
           {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
         </option>
       </select>

@@ -4,6 +4,7 @@ import { ProtocolSelectionComponent } from './protocol-selection/protocol-select
 import { ReportCreateComponent } from './report-create/report-create.component';
 import { ViewReportsComponent } from './view-reports/view-reports.component';
 import { FillReportComponent } from './fill-report/fill-report.component';
+import { ProtocolCreateComponent } from './protocol-create/protocol-create.component';
 
 
 export const routes: Routes = [
@@ -12,6 +13,8 @@ export const routes: Routes = [
   { path: 'protocol-selection', component: ProtocolSelectionComponent },
   { path: 'report-create', component: ReportCreateComponent },
   { path: 'view-reports', component: ViewReportsComponent},
-  { path: 'fill-report/:reportId', component: FillReportComponent }
+  { path: 'fill-report/:reportId', component: FillReportComponent },
+  { path: 'protocol-create', component: ProtocolCreateComponent }
+
 
 ];

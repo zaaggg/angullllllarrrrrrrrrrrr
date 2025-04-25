@@ -5,6 +5,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { ReportDTO } from '../model/reportDTO.model';
 import { ValidationChecklistItem } from '../model/validation-checklist-item.model';
 import { ValidationEntryUpdateDTO } from '../model/validation-entry-update.dto';
+import { AssignedUserDTO } from '../model/assignedUserDTO.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -17,6 +18,12 @@ export class ReportService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/create`, req, { headers });
+  }
+
+  getRequiredUsers(protocolId: number): Observable<AssignedUserDTO[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<AssignedUserDTO[]>(`${this.apiUrl}/required-users/${protocolId}`, { headers });
   }
 
   getReportsAssignedToMe() {

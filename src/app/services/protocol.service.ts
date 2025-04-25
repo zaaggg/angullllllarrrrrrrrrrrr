@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Protocol } from '../model/protocol.model';
+import { ProtocolCreationRequest } from '../model/ProtocolCreationRequest.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProtocolService {
@@ -14,6 +15,13 @@ export class ProtocolService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<{ [key: string]: any[] }>(`${this.apiUrl}/grouped`, { headers });
+  }
+
+  createProtocol(data: ProtocolCreationRequest): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post(`${this.apiUrl}/create`, data, { headers });
   }
 
 }

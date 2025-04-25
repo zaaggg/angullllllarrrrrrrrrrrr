@@ -1,0 +1,62 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 25px;
+  background: #1e1e2f;
+  border-radius: 10px;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2, h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 5px;
+  border: none;
+  background: #2b2b3d;
+  color: white;
+}
+
+.criteria-box {
+  background: #2d2d44;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 8px;
+  border: 1px solid #3e3e5c;
+}
+
+.add-btn, .remove-btn, button[type="submit"] {
+  margin-top: 15px;
+  background-color: #00b2ff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  background-color: #f16c17;
+}
+
+.add-btn {
+  background-color: #0b2d83;
+}
+
+button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
