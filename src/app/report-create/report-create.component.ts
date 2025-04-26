@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AssignedUserDTO } from '../model/assignedUserDTO.model';
+import { UserAssignmentDTO } from '../model/userAssignmentDTO.model'; // make sure this exists
 
 @Component({
   selector: 'app-report-create',
@@ -30,86 +31,70 @@ export class ReportCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Step 1: Initialize the static part of the form first
     this.reportForm = this.fb.group({
-      type: [''],
-      serialNumber: [''],
-      equipmentDescription: [''],
-      designation: [''],
-      manufacturer: [''],
-      immobilization: [''],
-      serviceSeg: [''],
-      businessUnit: ['']
+      type: ['', Validators.required],
+      serialNumber: ['', Validators.required],
+      equipmentDescription: ['', Validators.required],
+      designation: ['', Validators.required],
+      manufacturer: ['', Validators.required],
+      immobilization: [''], // Optional
+      serviceSeg: ['', Validators.required],
+      businessUnit: ['', Validators.required]
     });
 
-    // Step 2: Get protocolId from query param and fetch users
     this.route.queryParamMap.subscribe(params => {
       const protocolIdParam = params.get('protocolId');
       if (protocolIdParam) {
         this.protocolId = Number(protocolIdParam);
-        console.log('✅ Protocol ID from route:', this.protocolId);
-
-        this.reportService.getRequiredUsers(this.protocolId).subscribe({
-          next: (users) => {
-            console.log('[REQUIRED USERS]', users);
-            this.requiredUsers = users;
-
-            // Group users by department
-            this.usersByDepartment = {};
-            users.forEach(user => {
-              const deptId = user.department.id;
-              if (!this.usersByDepartment[deptId]) {
-                this.usersByDepartment[deptId] = [];
-              }
-              this.usersByDepartment[deptId].push(user);
-            });
-
-            // Extract unique departments and create FormControls
-            this.departments = Object.keys(this.usersByDepartment).map(id => {
-              const deptUsers = this.usersByDepartment[+id];
-              return {
-                id: +id,
-                name: deptUsers?.[0]?.department?.name || 'Département'
-              };
-            });
-
-            // Dynamically add FormControls for each department
-            this.departments.forEach(dept => {
-              const controlName = `department_${dept.id}`;
-              if (!this.reportForm.contains(controlName)) {
-                this.reportForm.addControl(controlName, new FormControl(''));
-              }
-            });
-          },
-          error: (err) => {
-            console.error('[REQUIRED USERS ERROR]', err);
-          }
-        });
-      } else {
-        console.warn('❌ No protocolId found in query params');
+        this.loadRequiredUsers(this.protocolId);
       }
     });
   }
 
+  loadRequiredUsers(protocolId: number) {
+    this.reportService.getRequiredUsers(protocolId).subscribe({
+      next: (users) => {
+        this.requiredUsers = users;
+        this.usersByDepartment = {};
 
-  groupUsersByDepartment(users: AssignedUserDTO[]): void {
-    this.usersByDepartment = {};
-    for (const user of users) {
-      const deptId = user.department.id;
-      if (!this.usersByDepartment[deptId]) {
-        this.usersByDepartment[deptId] = [];
+        users.forEach(user => {
+          const deptId = user.department.id;
+          if (!this.usersByDepartment[deptId]) {
+            this.usersByDepartment[deptId] = [];
+          }
+          this.usersByDepartment[deptId].push(user);
+        });
+
+        this.departments = Object.keys(this.usersByDepartment).map(id => ({
+          id: +id,
+          name: this.usersByDepartment[+id][0]?.department.name || 'Département'
+        }));
+
+        this.departments.forEach(dept => {
+          const controlName = `department_${dept.id}`;
+          if (!this.reportForm.contains(controlName)) {
+            this.reportForm.addControl(controlName, new FormControl('', Validators.required));
+          }
+        });
+      },
+      error: (err) => {
+        console.error('[REQUIRED USERS ERROR]', err);
       }
-      this.usersByDepartment[deptId].push(user);
-    }
+    });
   }
 
   submitReport() {
+    if (this.reportForm.invalid) {
+      alert('❌ Veuillez remplir tous les champs obligatoires.');
+      return;
+    }
+
     const formValues = this.reportForm.value;
 
-    const assignedUsers = this.departments.map(dept => ({
-      departmentId: dept.id,
-      userId: formValues[`department_${dept.id}`]
-    }));
+    const assignedUsers: UserAssignmentDTO[] = this.departments.map(dept => {
+      const userId = Number(formValues[`department_${dept.id}`]);
+      return { departmentId: dept.id, userId: userId };
+    });
 
     const payload = {
       ...formValues,
@@ -117,13 +102,11 @@ export class ReportCreateComponent implements OnInit {
       assignedUsers
     };
 
-    console.log("📦 Submitting Report:", payload);
-
     this.reportService.createReport(payload).subscribe({
-      next: () => alert('✅ Report created successfully!'),
+      next: () => alert('✅ Rapport créé avec succès !'),
       error: (err) => {
         console.error('❌ Creation failed:', err);
-        alert('Error creating report. Check console for details.');
+        alert('Erreur lors de la création du rapport. Vérifiez la console pour plus de détails.');
       }
     });
   }

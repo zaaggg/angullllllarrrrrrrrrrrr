@@ -1,11 +1,12 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ReportRequest } from '../model/reportRequest.model';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ReportDTO } from '../model/reportDTO.model';
 import { ValidationChecklistItem } from '../model/validation-checklist-item.model';
 import { ValidationEntryUpdateDTO } from '../model/validation-entry-update.dto';
 import { AssignedUserDTO } from '../model/assignedUserDTO.model';
+import { ReportMetadataDTO } from '../model/reportMetadataDTO.model';
+import { ImmobilizationUpdateDTO } from '../model/immobilization-updateDTO.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +15,7 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
-  createReport(req: ReportRequest) {
+  createReport(req: ReportDTO) {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/create`, req, { headers });
@@ -25,6 +26,14 @@ export class ReportService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<AssignedUserDTO[]>(`${this.apiUrl}/required-users/${protocolId}`, { headers });
   }
+
+  updateImmobilization(reportId: number, dto: ImmobilizationUpdateDTO) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<{ message: string }>(`${this.apiUrl}/rapports/update-immobilization/${reportId}`, dto, { headers });
+  }
+
+
 
   getReportsAssignedToMe() {
     const token = localStorage.getItem('token');
@@ -37,7 +46,11 @@ export class ReportService {
     return this.http.get<ReportDTO[]>(`${this.apiUrl}/my-created`, { headers });
   }
 
-
+  getReportMetadata(reportId: number): Observable<ReportMetadataDTO> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<ReportMetadataDTO>(`${this.apiUrl}/metadata/${reportId}`, { headers });
+  }
 
 }
 

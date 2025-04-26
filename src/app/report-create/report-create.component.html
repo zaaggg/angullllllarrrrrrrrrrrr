@@ -1,65 +1,64 @@
 <div class="container mt-4">
   <h2 class="mb-3">Créer un Rapport</h2>
 
-  <form [formGroup]="reportForm" (ngSubmit)="submitReport()" class="needs-validation">
+  <form [formGroup]="reportForm" (ngSubmit)="submitReport()" class="needs-validation" novalidate>
 
-    <!-- Input: Type -->
     <div class="form-group mb-3">
-      <label for="type">Type (ex: Homologation, Requalification...)</label>
-      <input type="text" id="type" class="form-control" formControlName="type" required />
+      <label for="type">Type</label>
+      <input id="type" class="form-control" formControlName="type" required />
     </div>
 
-    <!-- Other static inputs -->
     <div class="form-group mb-3">
       <label for="serialNumber">Numéro de série</label>
-      <input type="text" id="serialNumber" class="form-control" formControlName="serialNumber" required />
+      <input id="serialNumber" class="form-control" formControlName="serialNumber" required />
     </div>
 
     <div class="form-group mb-3">
       <label for="equipmentDescription">Description de l’équipement</label>
-      <input type="text" id="equipmentDescription" class="form-control" formControlName="equipmentDescription" />
+      <input id="equipmentDescription" class="form-control" formControlName="equipmentDescription" required />
     </div>
 
     <div class="form-group mb-3">
       <label for="designation">Désignation</label>
-      <input type="text" id="designation" class="form-control" formControlName="designation" />
+      <input id="designation" class="form-control" formControlName="designation" required />
     </div>
 
     <div class="form-group mb-3">
       <label for="manufacturer">Fabricant</label>
-      <input type="text" id="manufacturer" class="form-control" formControlName="manufacturer" />
+      <input id="manufacturer" class="form-control" formControlName="manufacturer" required />
     </div>
 
     <div class="form-group mb-3">
-      <label for="immobilization">Immobilisation</label>
-      <input type="text" id="immobilization" class="form-control" formControlName="immobilization" />
+      <label for="immobilization">Immobilisation (optionnel)</label>
+      <input id="immobilization" class="form-control" formControlName="immobilization" />
     </div>
 
     <div class="form-group mb-3">
       <label for="serviceSeg">Service Segment</label>
-      <input type="text" id="serviceSeg" class="form-control" formControlName="serviceSeg" />
+      <input id="serviceSeg" class="form-control" formControlName="serviceSeg" required />
     </div>
 
     <div class="form-group mb-3">
       <label for="businessUnit">Business Unit</label>
-      <input type="text" id="businessUnit" class="form-control" formControlName="businessUnit" />
+      <input id="businessUnit" class="form-control" formControlName="businessUnit" required />
     </div>
 
     <div *ngFor="let dept of departments" class="form-group mb-3">
-      <label [for]="'department_' + dept.id">Responsable du département {{ dept.name }}</label>
+      <label [for]="'department_' + dept.id">
+        Responsable du département {{ dept.name }}
+      </label>
       <select
         class="form-control"
+        [formControlName]="'department_' + dept.id"
         [id]="'department_' + dept.id"
-        [formControlName]="'department_' + dept.id">
+        required>
         <option value="">-- Sélectionnez un utilisateur --</option>
-        <option
-          *ngFor="let user of usersByDepartment[dept.id]"
-          [value]="user.userId">
+        <option *ngFor="let user of usersByDepartment[dept.id]" [value]="user.userId">
           {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
         </option>
       </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Créer le rapport</button>
+    <button type="submit" class="btn btn-primary" [disabled]="reportForm.invalid">Créer le rapport</button>
   </form>
 </div>

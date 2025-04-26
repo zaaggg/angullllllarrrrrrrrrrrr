@@ -1,4 +1,59 @@
 <div class="standard-checklist">
+  <h2>Détails du rapport</h2>
+  <div class="checklist-table">
+
+    <div class="checklist-row">
+      <label>Type</label>
+      <input type="text" [value]="reportMetadata?.type" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Numéro de série</label>
+      <input type="text" [value]="reportMetadata?.serialNumber" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Description équipement</label>
+      <input type="text" [value]="reportMetadata?.equipmentDescription" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Désignation</label>
+      <input type="text" [value]="reportMetadata?.designation" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Fabricant</label>
+      <input type="text" [value]="reportMetadata?.manufacturer" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Service Segment</label>
+      <input type="text" [value]="reportMetadata?.serviceSeg" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Business Unit</label>
+      <input type="text" [value]="reportMetadata?.businessUnit" disabled />
+    </div>
+
+    <div class="checklist-row">
+      <label>Immobilisation</label>
+      <input
+        type="text"
+        [(ngModel)]="reportMetadata.immobilization"
+        [disabled]="!canEditImmobilization()"
+        name="immobilization" />
+    </div>
+
+    <div *ngIf="canEditImmobilization()">
+      <button (click)="updateImmobilization()">💾 Sauvegarder Immobilisation</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="standard-checklist">
   <h2>Checklist Standard</h2>
 
   <form (ngSubmit)="submitStandardChecklist()" *ngIf="standardChecklist?.length">

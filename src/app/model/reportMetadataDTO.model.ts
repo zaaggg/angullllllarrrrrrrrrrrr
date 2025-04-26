@@ -1,9 +1,4 @@
-import { UserAssignmentDTO } from "./UserAssignmentDTO.model";
-
-
-
-export interface ReportRequest {
-  protocolId: number;
+export interface ReportMetadataDTO {
   type: string;
   serialNumber: string;
   equipmentDescription: string;
@@ -12,5 +7,5 @@ export interface ReportRequest {
   immobilization: string;
   serviceSeg: string;
   businessUnit: string;
-  assignedUsers: UserAssignmentDTO[];
+  canEditImmobilization: boolean;
 }
