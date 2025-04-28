@@ -1,9 +1,9 @@
 export interface SpecificReportEntryDTO {
   id: number;
-  homologation: boolean;
-  action: string;
-  responsableAction: string;
-  deadline: string;
-  successControl: string;
+  homologation: boolean | null;
+  action: string | null;
+  responsableAction: string | null;
+  deadline: string | null;
+  successControl: string | null;
   isUpdated: boolean;
 }

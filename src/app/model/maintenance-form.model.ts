@@ -3,31 +3,31 @@ import { ControlStandard, CurrentType, NetworkForm } from "./maintenance.enums";
 export interface MaintenanceForm {
   id?: number;
 
-  controlStandard?: ControlStandard;
-  currentType?: CurrentType;
-  networkForm?: NetworkForm;
+  controlStandard?: ControlStandard | null;
+  currentType?: CurrentType | null;
+  networkForm?: NetworkForm | null;
 
-  powerCircuit?: string;
-  controlCircuit?: string;
-  fuseValue?: string;
-  hasTransformer?: boolean;
-  frequency?: string;
+  powerCircuit?: string | null;
+  controlCircuit?: string | null;
+  fuseValue?: string | null;
+  hasTransformer?: boolean | null;
+  frequency?: string | null;
 
-  phaseBalanceTest380v?: string;
-  phaseBalanceTest210v?: string;
+  phaseBalanceTest380v?: string | null;
+  phaseBalanceTest210v?: string | null;
 
-  insulationResistanceMotor?: string;
-  insulationResistanceCable?: string;
+  insulationResistanceMotor?: string | null;
+  insulationResistanceCable?: string | null;
 
-  machineSizeHeight?: string;
-  machineSizeLength?: string;
-  machineSizeWidth?: string;
+  machineSizeHeight?: string | null;
+  machineSizeLength?: string | null;
+  machineSizeWidth?: string | null;
 
-  isInOrder?: boolean;
+  isInOrder?: boolean | null ;
 
   maintenanceSystemUpdated?: boolean;
   sheUpdated?: boolean;
-  
+
     // 🔥 Add this line
     [key: string]: any;
 }

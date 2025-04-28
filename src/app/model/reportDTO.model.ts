@@ -14,4 +14,3 @@ export interface ReportDTO {
   createdByEmail: string;
   assignedUsers: AssignedUserDTO[];
 }
-

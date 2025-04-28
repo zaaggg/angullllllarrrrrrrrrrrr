@@ -6,12 +6,12 @@ export interface SpecificChecklistItemDTO {
   criteriaDescription: string;
   checkResponsibles: Department[];
   implementationResponsibles: Department[];
-  homologation: boolean;
-  action: string;
-  responsableAction: string;
-  deadline: string;
-  successControl: string;
+  homologation: boolean | null;
+  action: string | null;
+  responsableAction: string | null;
+  deadline: string | null;
+  successControl: string | null;
   isUpdated: boolean;
   editable: boolean;
-  isFilled: boolean ; 
+  isFilled: boolean ;
 }

@@ -35,6 +35,7 @@ export class FillReportComponent implements OnInit {
   maintenanceForm!: MaintenanceFormDTO;
   reportMetadata!: ReportMetadataDTO;
 
+
   constructor(
     private reportEntryService: ReportEntryService,
     private reportService: ReportService,
@@ -127,16 +128,19 @@ export class FillReportComponent implements OnInit {
 
   submitStandardChecklist() {
     const filledEntries = this.standardChecklist
-      .filter(e => e.isFilled)
-      .map(e => ({
-        id: e.entryId,
-        implemented: e.implemented,
-        action: e.action?.trim() || '-',
-        responsableAction: e.responsableAction?.trim() || '-',
-        deadline: e.deadline?.trim() || '-',
-        successControl: e.successControl?.trim() || '-',
-        isUpdated: true
-      }));
+    .filter(e => e.isFilled)
+    .map(e => ({
+      id: e.entryId,
+      implemented: e.implemented ?? false, // ✅ Fix here
+      action: e.action?.trim() || null,
+      responsableAction: e.responsableAction?.trim() || null,
+      deadline: e.deadline || null,
+      successControl: e.successControl?.trim() || null,
+      isUpdated: true
+    }));
+
+
+
 
     if (filledEntries.length === 0) {
       alert('Aucun champ rempli à enregistrer.');

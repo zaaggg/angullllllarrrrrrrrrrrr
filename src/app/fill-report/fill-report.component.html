@@ -89,7 +89,8 @@
           <input
             type="text"
             placeholder="Action"
-            [disabled]="!item.editable || item.implemented"
+            [disabled]="!item.editable || (item.implemented ?? false)"
+
             [(ngModel)]="item.action"
             name="action-{{ item.entryId }}"
             (ngModelChange)="item.isFilled = true" />
@@ -99,27 +100,29 @@
           <input
             type="text"
             placeholder="Responsable"
-            [disabled]="!item.editable || item.implemented"
+            [disabled]="!item.editable || (item.implemented ?? false)"
+
             [(ngModel)]="item.responsableAction"
             name="responsable-{{ item.entryId }}"
             (ngModelChange)="item.isFilled = true" />
         </div>
 
-        <div>
-          <input
-            type="text"
-            placeholder="Délais"
-            [disabled]="!item.editable || item.implemented"
-            [(ngModel)]="item.deadline"
-            name="deadline-{{ item.entryId }}"
-            (ngModelChange)="item.isFilled = true" />
-        </div>
+        <input
+        type="date"
+        [disabled]="!item.editable || (item.implemented ?? false)"
+
+        [(ngModel)]="item.deadline"
+        name="deadline-{{ item.entryId }}"
+        (ngModelChange)="item.isFilled = true" />
+
+
 
         <div>
           <input
             type="text"
             placeholder="Contrôle"
-            [disabled]="!item.editable || item.implemented"
+            [disabled]="!item.editable || (item.implemented ?? false)"
+
             [(ngModel)]="item.successControl"
             name="control-{{ item.entryId }}"
             (ngModelChange)="item.isFilled = true" />
@@ -172,7 +175,8 @@
             <input
               type="text"
               placeholder="Action"
-              [disabled]="!item.editable || item.homologation"
+              [disabled]="!item.editable || (item.homologation ?? false)"
+
               [(ngModel)]="item.action"
               name="action-{{ item.entryId }}"
               (ngModelChange)="item.isFilled = true" />
@@ -182,27 +186,28 @@
             <input
               type="text"
               placeholder="Responsable"
-              [disabled]="!item.editable || item.homologation"
+              [disabled]="!item.editable || (item.homologation ?? false)"
+
               [(ngModel)]="item.responsableAction"
               name="responsable-{{ item.entryId }}"
               (ngModelChange)="item.isFilled = true" />
           </div>
 
-          <div>
-            <input
-              type="text"
-              placeholder="Délais"
-              [disabled]="!item.editable || item.homologation"
-              [(ngModel)]="item.deadline"
-              name="deadline-{{ item.entryId }}"
-              (ngModelChange)="item.isFilled = true" />
-          </div>
+          <input
+          type="date"
+          [disabled]="!item.editable || (item.homologation ?? false)"
+
+          [(ngModel)]="item.deadline"
+          name="deadline-{{ item.entryId }}"
+          (ngModelChange)="item.isFilled = true" />
+
 
           <div>
             <input
               type="text"
               placeholder="Contrôle"
-              [disabled]="!item.editable || item.homologation"
+              [disabled]="!item.editable || (item.homologation ?? false)"
+
               [(ngModel)]="item.successControl"
               name="control-{{ item.entryId }}"
               (ngModelChange)="item.isFilled = true" />

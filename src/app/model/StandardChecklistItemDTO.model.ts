@@ -6,11 +6,11 @@ export interface StandardChecklistItemDTO {
   criteriaDescription: string;
   checkResponsible: Department;
   implementationResponsible: Department;
-  implemented: boolean;
-  action: string;
-  responsableAction: string;
-  deadline: string;
-  successControl: string;
+  implemented: boolean | null;
+  action: string | null;
+  responsableAction: string | null;
+  deadline: string | null;
+  successControl: string | null;
   updated: boolean;
   editable: boolean;
   isFilled: boolean ; // 👈 add this

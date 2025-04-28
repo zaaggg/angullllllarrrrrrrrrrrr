@@ -1,12 +1,13 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ReportDTO } from '../model/reportDTO.model';
+import { ReportCreateRequest } from '../model/reportCreateRequest.model';
 import { ValidationChecklistItem } from '../model/validation-checklist-item.model';
 import { ValidationEntryUpdateDTO } from '../model/validation-entry-update.dto';
 import { AssignedUserDTO } from '../model/assignedUserDTO.model';
 import { ReportMetadataDTO } from '../model/reportMetadataDTO.model';
 import { ImmobilizationUpdateDTO } from '../model/immobilization-updateDTO.model';
+import { ReportDTO } from '../model/reportDTO.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,7 +16,7 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
-  createReport(req: ReportDTO) {
+  createNewReport(req: ReportCreateRequest) {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/create`, req, { headers });

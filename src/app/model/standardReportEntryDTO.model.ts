@@ -1,9 +1,9 @@
 export interface StandardReportEntryDTO {
   id: number;
-  implemented: boolean;
-  action: string;
-  responsableAction: string;
-  deadline: string;
-  successControl: string;
+  implemented: boolean ;
+  action: string | null;
+  responsableAction: string | null;
+  deadline: string | null;
+  successControl: string | null;
   isUpdated: boolean;
 }
