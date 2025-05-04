@@ -164,11 +164,11 @@ export class FillReportComponent implements OnInit {
       .filter(e => e.isFilled)
       .map(e => ({
         id: e.entryId,
-        homologation: e.homologation,
-        action: e.action?.trim() || '-',
-        responsableAction: e.responsableAction?.trim() || '-',
-        deadline: e.deadline?.trim() || '-',
-        successControl: e.successControl?.trim() || '-',
+        homologation: e.homologation ?? false, // ✅ Fix here
+        action: e.action?.trim() || null,
+        responsableAction: e.responsableAction?.trim() || null,
+        deadline: e.deadline || null,
+        successControl: e.successControl?.trim() || null,
         isUpdated: true
       }));
 
@@ -226,7 +226,5 @@ export class FillReportComponent implements OnInit {
     return this.specificChecklist.some(item => item.isFilled === true);
   }
 
-  formatLabel(key: string): string {
-    return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).replace(/_/g, ' ');
-  }
+
 }

@@ -39,7 +39,7 @@ export class LoginComponent {
       next: res => {
         console.log('✅ Token:', res.token);
         localStorage.setItem('token', res.token);
-        this.router.navigate(['/protocol-create']);
+        this.router.navigate(['/protocol-selection']);
       },
       error: err => {
         console.error('❌ Login failed:', err);

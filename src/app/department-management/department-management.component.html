@@ -1,0 +1,35 @@
+<div class="container">
+  <h2>Gestion des Départements</h2>
+
+  <form [formGroup]="departmentForm" (ngSubmit)="addDepartment()" class="form-inline">
+    <input formControlName="name" class="form-control" placeholder="Nom du département" />
+    <button type="submit" class="btn btn-primary" [disabled]="departmentForm.invalid">Ajouter</button>
+  </form>
+
+  <table class="table mt-4" *ngIf="departments.length">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nom</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dept of departments; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ dept.name }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="deleteDepartment(dept.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div>
+<button
+  class="btn btn-outline-primary btn-sm"
+  [routerLink]="['/update-password']"
+>
+  Mettre à jour le mot de passe
+</button>
+</div>

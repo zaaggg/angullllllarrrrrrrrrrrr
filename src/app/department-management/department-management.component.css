@@ -1,0 +1,13 @@
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+form.form-inline {
+  display: flex;
+  gap: 10px;
+}
+
+input.form-control {
+  flex: 1;
+}

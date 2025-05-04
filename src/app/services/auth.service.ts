@@ -1,8 +1,9 @@
 // src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { PasswordUpdateRequest } from '../model/passwordUpdateRequest.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,15 @@ export class AuthService {
   getUserId(): number | null {
     const user = this.getUserFromToken();
     return user ? user.userId : null;
+  }
+
+  updatePassword(request: PasswordUpdateRequest) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/update-password`,
+      request,
+      { headers }
+    );
   }
 }

@@ -8,7 +8,10 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
+  profilePhoto: string;
   role: Role;
   department: Department;
   plant: Plant;
+  loggedIn: boolean; // 🔥 Important: Online / Offline
 }

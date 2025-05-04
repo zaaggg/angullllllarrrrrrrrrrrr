@@ -1,0 +1,115 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Gestion des utilisateurs</h2>
+
+  <!-- ✅ Add User Form -->
+  <form [formGroup]="addUserForm" (ngSubmit)="addUser()" class="mb-5 border p-4 rounded shadow-sm bg-light">
+    <h4>Ajouter un nouvel utilisateur</h4>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label>Prénom</label>
+        <input type="text" class="form-control" formControlName="firstName" required>
+      </div>
+      <div class="col-md-4">
+        <label>Nom</label>
+        <input type="text" class="form-control" formControlName="lastName" required>
+      </div>
+      <div class="col-md-4">
+        <label>Email</label>
+        <input type="email" class="form-control" formControlName="email" required>
+      </div>
+      <div class="col-md-4">
+        <label>Téléphone</label>
+        <input type="text" class="form-control" formControlName="phoneNumber" required>
+      </div>
+      <div class="col-md-4">
+        <label>Département</label>
+        <select class="form-select" formControlName="departmentId" required>
+          <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label>Usine</label>
+        <select class="form-select" formControlName="plantId" required>
+          <option *ngFor="let p of plants" [value]="p.id">{{ p.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label>Rôle</label>
+        <select class="form-select" formControlName="role">
+          <option value="EMPLOYEE">Employé</option>
+          <option value="DEPARTMENT_MANAGER">Chef Département</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary mt-2" type="submit" [disabled]="addUserForm.invalid">Créer</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- ✅ Users Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Département</th>
+          <th>Usine</th>
+          <th>Rôle</th>
+          <th>Modifier</th>
+          <th>Supprimer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.email }}</td>
+
+          <!-- Téléphone -->
+          <td>
+            <input type="text" class="form-control"
+              [formControl]="asFormControl(getEditForm(user.id).get('phoneNumber'))">
+          </td>
+
+          <!-- Département -->
+          <td>
+            <select class="form-select"
+              [formControl]="asFormControl(getEditForm(user.id).get('departmentId'))">
+              <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+            </select>
+          </td>
+
+          <!-- Usine -->
+          <td>
+            <select class="form-select"
+              [formControl]="asFormControl(getEditForm(user.id).get('plantId'))">
+              <option *ngFor="let p of plants" [value]="p.id">{{ p.name }}</option>
+            </select>
+          </td>
+
+          <!-- Rôle -->
+          <td>
+            <select class="form-select"
+              [formControl]="asFormControl(getEditForm(user.id).get('role'))">
+              <option value="EMPLOYEE">Employé</option>
+              <option value="DEPARTMENT_MANAGER">Chef Département</option>
+            </select>
+          </td>
+
+          <!-- Save Button -->
+          <td>
+            <button class="btn btn-success btn-sm" (click)="updateUser(user.id)"
+              [disabled]="getEditForm(user.id).invalid">Enregistrer</button>
+          </td>
+          <td>
+            <button class="btn btn-delete btn-sm" (click)="deleteUser(user.id)"
+              [disabled]="getEditForm(user.id).invalid">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

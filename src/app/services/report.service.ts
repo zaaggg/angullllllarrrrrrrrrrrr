@@ -2,8 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ReportCreateRequest } from '../model/reportCreateRequest.model';
-import { ValidationChecklistItem } from '../model/validation-checklist-item.model';
-import { ValidationEntryUpdateDTO } from '../model/validation-entry-update.dto';
+
 import { AssignedUserDTO } from '../model/assignedUserDTO.model';
 import { ReportMetadataDTO } from '../model/reportMetadataDTO.model';
 import { ImmobilizationUpdateDTO } from '../model/immobilization-updateDTO.model';

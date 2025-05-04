@@ -1,0 +1,103 @@
+/* Container styling */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Section Titles */
+h2, h4 {
+  font-weight: 600;
+  color: #0b2d83;
+}
+
+/* Add User Form Styling */
+form {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+form label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #343a40;
+}
+
+form .form-control,
+form .form-select {
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+/* Button styling */
+button {
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: 0.2s ease-in-out;
+}
+
+button.btn-primary {
+  background-color: #0b2d83;
+  border-color: #0b2d83;
+}
+
+button.btn-primary:hover {
+  background-color: #082165;
+}
+
+button.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+button.btn-delete {
+  background-color: #850000;
+  border-color: #850000;
+}
+
+button.btn-success:hover {
+  background-color: #146c43;
+}
+
+/* Table Styling */
+.table {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table th {
+  background-color: #0b2d83;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.table td {
+  background-color: #fdfdfd;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .row.g-3 > div {
+    margin-bottom: 15px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  form .row {
+    flex-direction: column;
+  }
+}

@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
 import { ReportService } from '../services/report.service';
 
 import { ReportCreateRequest } from '../model/reportCreateRequest.model';
+import { AssignedUserDTO } from '../model/assignedUserDTO.model';
 
 @Component({
   selector: 'app-report-create',
@@ -17,9 +18,9 @@ import { ReportCreateRequest } from '../model/reportCreateRequest.model';
 })
 export class ReportCreateComponent implements OnInit {
   reportForm!: FormGroup;
-  users: User[] = [];
+  users: AssignedUserDTO[] = [];
   departments: any[] = [];
-  usersByDepartment: { [key: number]: User[] } = {};
+  usersByDepartment: { [key: number]: AssignedUserDTO[] } = {};
   protocolId!: number;
   isSubmitting = false;
   submitted = false;
@@ -61,14 +62,13 @@ export class ReportCreateComponent implements OnInit {
         console.log('✅ Protocol ID from route:', this.protocolId);
       } else {
         console.log('Aucun protocole sélectionné', 'Erreur');
-        this.router.navigate(['/dashboard/report-dashboard/protocol-selection']);
       }
     });
   }
 
   loadUsers(): void {
     this.loadingUsers = true;
-    this.userService.getAllUsersExceptAdmins().subscribe({
+    this.reportService.getRequiredUsers(this.protocolId).subscribe({
       next: (users) => {
         this.users = users;
         const uniqueDepts = new Map<number, string>();
@@ -135,7 +135,6 @@ export class ReportCreateComponent implements OnInit {
     this.reportService.createNewReport(payload).subscribe({
       next: () => {
         console.log('Rapport créé avec succès !', 'Succès');
-        this.router.navigate(['/dashboard/report-dashboard/view-reports']);
       },
       error: err => {
         console.error('❌ Error creating report:', err);
