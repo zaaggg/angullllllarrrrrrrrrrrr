@@ -42,6 +42,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./update-password/update-password.component')
         .then(m => m.UpdatePasswordComponent)
+  },
+
+  {
+    path: 'notify-list',
+    loadComponent: () =>
+      import('./notify-list/notify-list.component')
+        .then(m => m.NotifyListComponent)
   }
 
 

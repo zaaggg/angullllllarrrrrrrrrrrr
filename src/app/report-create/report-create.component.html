@@ -48,15 +48,17 @@
         Responsable du département {{ dept.name }}
       </label>
       <select
-        class="form-control"
-        [formControlName]="'department_' + dept.id"
-        [id]="'department_' + dept.id"
-        required>
-        <option value="">-- Sélectionnez un utilisateur --</option>
-        <option *ngFor="let user of usersByDepartment[dept.id]" [value]="user.userId">
-          {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
-        </option>
-      </select>
+      class="form-control"
+      [formControlName]="'department_' + dept.id"
+      [id]="'department_' + dept.id"
+      required>
+      <option value="">-- Sélectionnez un utilisateur --</option>
+      <option *ngFor="let user of usersByDepartment[dept.id]" [value]="user.userId">
+        {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+      </option>
+    </select>
+
+
     </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="reportForm.invalid">Créer le rapport</button>

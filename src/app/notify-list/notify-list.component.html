@@ -1,0 +1,15 @@
+<ul *ngIf="notifications.length" class="notification-list">
+  <li *ngFor="let notif of notifications" [ngClass]="{ 'not-seen': !notif.seen }">
+    <strong>{{ notif.description }}</strong><br />
+
+    <a [routerLink]="notif.link" (click)="onNotificationClick(notif)">
+      Voir plus
+    </a>
+
+    <button class="btn-delete" (click)="onDeleteNotification(notif.id)">
+      Supprimer
+    </button>
+
+    <div class="timestamp">{{ notif.time | date:'medium' }}</div>
+  </li>
+</ul>

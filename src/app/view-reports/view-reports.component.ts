@@ -39,6 +39,7 @@ export class ViewReportsComponent implements OnInit {
     this.reportService.getReportsCreatedByMe().subscribe({
       next: (reports: ReportDTO[]) => {
         this.createdReports = reports;
+        console.log(this.createdReports)
       },
       error: (err) => {
         console.error('Error fetching created reports:', err);
@@ -50,6 +51,7 @@ export class ViewReportsComponent implements OnInit {
     this.reportService.getReportsAssignedToMe().subscribe({
       next: (reports: ReportDTO[]) => {
         this.assignedReports = reports;
+        console.log(this.assignedReports)
       },
       error: (err) => {
         console.error('Error fetching assigned reports:', err);

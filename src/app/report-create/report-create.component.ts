@@ -39,6 +39,7 @@ export class ReportCreateComponent implements OnInit {
     this.initForm();
     this.getProtocolId();
     this.loadUsers();
+
   }
 
   initForm(): void {
@@ -71,6 +72,7 @@ export class ReportCreateComponent implements OnInit {
     this.reportService.getRequiredUsers(this.protocolId).subscribe({
       next: (users) => {
         this.users = users;
+        console.log(this.users);
         const uniqueDepts = new Map<number, string>();
 
         users.forEach(user => {
@@ -82,6 +84,7 @@ export class ReportCreateComponent implements OnInit {
           }
           this.usersByDepartment[deptId].push(user);
         });
+        console.log('🔍 usersByDepartment:', this.usersByDepartment);
 
         this.departments = Array.from(uniqueDepts.entries()).map(([id, name]) => ({ id, name }));
 
@@ -110,10 +113,25 @@ export class ReportCreateComponent implements OnInit {
 
     const formValues = this.reportForm.value;
 
-    const assignedUsers = this.departments.map(dept => ({
-      departmentId: dept.id,
-      userId: Number(formValues[`department_${dept.id}`])
-    }));
+    // ✅ Safely extract and convert userId for each department
+    const assignedUsers = this.departments
+    .map(dept => {
+      const rawValue = formValues[`department_${dept.id}`];
+      if (!rawValue || isNaN(Number(rawValue))) {
+        console.error(`❌ Invalid userId for department ${dept.name}`);
+        return null;
+      }
+      return {
+        departmentId: dept.id,
+        userId: Number(rawValue)
+      };
+    })
+    .filter((u): u is { departmentId: number, userId: number } => u !== null);
+
+
+
+    // ✅ Debug log before sending
+    console.log('✅ Assigned Users:', assignedUsers);
 
     const payload: ReportCreateRequest = {
       protocolId: this.protocolId,
@@ -125,7 +143,7 @@ export class ReportCreateComponent implements OnInit {
       immobilization: formValues.immobilization || null,
       serviceSeg: formValues.serviceSeg,
       businessUnit: formValues.businessUnit,
-      assignedUsers
+      assignedUsers: assignedUsers.filter(u => u.userId !== null) // avoid sending invalid ones
     };
 
     console.log('📤 Final Payload:', payload);
@@ -134,7 +152,8 @@ export class ReportCreateComponent implements OnInit {
 
     this.reportService.createNewReport(payload).subscribe({
       next: () => {
-        console.log('Rapport créé avec succès !', 'Succès');
+        console.log('✅ Rapport créé avec succès !');
+        this.router.navigate(['/dashboard/report-dashboard/report-list']);
       },
       error: err => {
         console.error('❌ Error creating report:', err);
@@ -143,6 +162,7 @@ export class ReportCreateComponent implements OnInit {
       }
     });
   }
+
 
   isFieldInvalid(fieldName: string): boolean {
     const control = this.reportForm.get(fieldName);
