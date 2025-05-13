@@ -9,6 +9,7 @@ import { PasswordUpdateRequest } from '../model/passwordUpdateRequest.model';
   providedIn: 'root'
 })
 export class AuthService {
+
   private apiUrl = 'http://localhost:8081/api/auth';
 
   constructor(

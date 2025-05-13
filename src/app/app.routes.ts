@@ -6,8 +6,8 @@ import { ViewReportsComponent } from './view-reports/view-reports.component';
 import { FillReportComponent } from './fill-report/fill-report.component';
 import { ProtocolCreateComponent } from './protocol-create/protocol-create.component';
 import { Admin } from 'mongodb';
-import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
 import { UpdatePasswordComponent } from './update-password/update-password.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 export const routes: Routes = [
@@ -19,12 +19,8 @@ export const routes: Routes = [
   { path: 'fill-report/:reportId', component: FillReportComponent },
   { path: 'protocol-create', component: ProtocolCreateComponent },
   {path: 'update-password',component:UpdatePasswordComponent},
-  {
-    path: 'admin-user-management',
-    loadComponent: () =>
-      import('./admin-user-management/admin-user-management.component')
-        .then(m => m.AdminUserManagementComponent)
-  },
+  {path: 'edit-profile', component:EditProfileComponent},
+
   {
     path: 'admin-plant',
     loadComponent: () =>
@@ -49,8 +45,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./notify-list/notify-list.component')
         .then(m => m.NotifyListComponent)
+  },
+  {
+    path: 'edit-profile',
+    loadComponent: () =>
+      import('./edit-profile/edit-profile.component')
+        .then(m => m.EditProfileComponent)
   }
-
 
 
 

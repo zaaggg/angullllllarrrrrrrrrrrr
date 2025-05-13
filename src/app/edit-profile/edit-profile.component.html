@@ -1,0 +1,28 @@
+<div class="profile-container">
+  <h2>Edit Profile</h2>
+
+  <div class="profile-photo-container">
+    <img [src]="profilePhotoPreview" alt="Profile Photo" class="profile-photo">
+    <label for="profilePhotoInput" class="upload-btn">Change Photo</label>
+    <input id="profilePhotoInput" type="file" (change)="onFileSelected($event)" hidden>
+  </div>
+
+  <form (ngSubmit)="updateProfile()" class="profile-form">
+    <input type="text" placeholder="First Name" [(ngModel)]="profileData.firstName" name="firstName" required>
+    <input type="text" placeholder="Last Name" [(ngModel)]="profileData.lastName" name="lastName" required>
+    <input type="text" placeholder="Phone Number" [(ngModel)]="profileData.phoneNumber" name="phoneNumber" required>
+    <input type="email" placeholder="Email" [(ngModel)]="profileData.email" name="email" required>
+
+
+<select [(ngModel)]="profileData.department" name="department" required>
+  <option *ngFor="let dept of departments" [ngValue]="dept">{{ dept.name }}</option>
+</select>
+
+<select [(ngModel)]="profileData.plant" name="plant" required>
+  <option *ngFor="let plant of plants" [ngValue]="plant">{{ plant.name }}</option>
+</select>
+
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
